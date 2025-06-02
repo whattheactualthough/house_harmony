@@ -18,8 +18,4 @@ async function getRooms() {
     }
   }
 
-  getRooms().then((data)=> {
-    console.log(data)
-  })
-
   module.exports = {getRooms}
