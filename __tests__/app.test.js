@@ -1,17 +1,8 @@
 const endpointsJSON = require("../endpoints.json");
 const request = require("supertest");
-const db = require("../db/connection.js");
-const seed = require("");
-const testData = require("");
-const app = require("../app");
-require("jest-sorted");
-/* Set up your beforeEach & afterAll functions here */
-beforeEach(() => {
-  return seed();
-});
-afterAll(() => {
-  return db.end();
-});
+const app = require("../app.js");
+const { getUsers } = require("../app/controllers/dummy_controller.js");
+
 describe("GET /api", () => {
   test("200: Responds with an object detailing the documentation for each endpoint", () => {
     return request(app)
@@ -110,20 +101,20 @@ describe("GET /api/status", () => {
       });
   });
 });
-describe("GET /api/users", () => {
-  test("200: responds with an array containing all images objects", () => {
+describe.only("GET /api/users", () => {
+  test("200: responds with an array containing all users objects", () => {
     return request(app)
-      .get("/api/user")
+      .get("/api/users")
       .expect(200)
       .then(({ body }) => {
-        expect(body).toHaveLength(/* number of tasks in test array*/);
+        console.log(body);
         body.forEach((user) => {
           expect(user).toMatchObject({
             created_at: expect.any(String),
             user_name: expect.any(String),
             group_name: expect.any(String),
-            img_url: expect.any(String),
-            is_admin: expect.any(String),
+            image_url: expect.any(String),
+            is_admin: expect.any(Boolean),
           });
         });
       });
