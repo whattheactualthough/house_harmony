@@ -4,7 +4,6 @@ const {supabase_url, supabase_key} = require("./connection")
 async function getUsers() {
     try {
       const supabase = createClient(supabase_url, supabase_key);
-      console.log(supabase_url, supabase_key)
       const { data, error } = await supabase
         .from('users')
         .select('*');
@@ -18,3 +17,5 @@ async function getUsers() {
       throw error;
     }
   }
+
+  module.exports = {getUsers}
