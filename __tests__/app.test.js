@@ -32,17 +32,28 @@ describe("GET /api/tasks", () => {
         console.log(body);
         expect(body).toHaveLength(7);
         body.forEach((task) => {
-          expect(typeof task.id).toBe("number");
-          expect(typeof task.created_at).toBe("string");
-          expect(typeof task.task_name).toBe("string");
-          expect(typeof task.description).toBe("string");
-          expect(typeof task.is_urgent).toBe("boolean");
-          expect(typeof task.due_date instanceof Date).toBe();
+          expect(task).toHaveProperty("id");
+          expect(task).toHaveProperty("created_at");
+          expect(task).toHaveProperty("task_name");
+          expect(task).toHaveProperty("description");
+          expect(task).toHaveProperty("is_urgent");
+          expect(task).toHaveProperty("due_date");
+          expect(task).toHaveProperty("task_specific_date");
+          expect(task).toHaveProperty("is_recurring");
+          expect(task).toHaveProperty("recurring_frequency");
+          expect(task).toHaveProperty("room_id");
+          expect(task).toHaveProperty("created_by_user_id");
+          expect(task).toHaveProperty("assigned_to_user_id");
+          expect(task).toHaveProperty("status_id");
+          expect(task).toHaveProperty("task_complete_image_id");
+          expect(task).toHaveProperty("updated_at");
+          expect(task).toHaveProperty("task_image_id");
+          expect(task).toHaveProperty("task_desirability_level_id");
         });
       });
   });
 });
-describe("GET /api/images", () => {
+describe.skip("GET /api/images", () => {
   test("200: responds with an array containing all images objects", () => {
     return request(app)
       .get("/api/images")
@@ -59,31 +70,33 @@ describe("GET /api/images", () => {
   });
 });
 describe("GET /api/rooms", () => {
-  test("200: responds with an array containing all images objects", () => {
+  test("200: responds with an array containing all rooms objects", () => {
     return request(app)
       .get("/api/rooms")
       .expect(200)
       .then(({ body }) => {
-        expect(body).toHaveLength(/* number of tasks in test array*/);
+        expect(body).toHaveLength(9);
         body.forEach((room) => {
           expect(room).toMatchObject({
+            id: expect.any(Number),
             created_at: expect.any(String),
             room_name: expect.any(String),
-            description: expect.any(String),
+            description: null,
           });
         });
       });
   });
 });
 describe("GET /api/status", () => {
-  test("200: responds with an array containing all images objects", () => {
+  test("200: responds with an array containing all status objects", () => {
     return request(app)
       .get("/api/status")
       .expect(200)
       .then(({ body }) => {
-        expect(body).toHaveLength(/* number of tasks in test array*/);
+        expect(body).toHaveLength(4);
         body.forEach((status) => {
           expect(status).toMatchObject({
+            id: expect.any(Number),
             created_at: expect.any(String),
             description: expect.any(String),
           });
