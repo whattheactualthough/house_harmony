@@ -1,9 +1,9 @@
 const express = require("express");
 const {
-  getApi,
   getUsers,
-  getTasks,
-} = require("./app/controllers/dummy_controller");
+ } = require("./app/controllers/users.controller");
+const { getApi } = require("./app/controllers/api.controller");
+const { getTasks } = require("./app/controllers/tasks.controller");
 const app = express();
 
 app.get("/api", getApi);

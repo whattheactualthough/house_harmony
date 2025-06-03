@@ -1,7 +1,7 @@
 const endpointsJSON = require("../endpoints.json");
 const request = require("supertest");
 const app = require("../app.js");
-const { getUsers } = require("../app/controllers/dummy_controller.js");
+
 
 describe("GET /api", () => {
   test("200: Responds with an object detailing the documentation for each endpoint", () => {
@@ -23,7 +23,7 @@ describe("Error Handling General", () => {
       });
   });
 });
-describe.only("GET /api/tasks", () => {
+describe("GET /api/tasks", () => {
   test("200: responds with an array containing all tasks objects", () => {
     return request(app)
       .get("/api/tasks")
