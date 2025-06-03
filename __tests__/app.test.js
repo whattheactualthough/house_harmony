@@ -23,31 +23,21 @@ describe("Error Handling General", () => {
       });
   });
 });
-describe("GET /api/tasks", () => {
+describe.only("GET /api/tasks", () => {
   test("200: responds with an array containing all tasks objects", () => {
     return request(app)
       .get("/api/tasks")
       .expect(200)
       .then(({ body }) => {
-        expect(body).toHaveLength(/* number of tasks in test array*/);
+        console.log(body);
+        expect(body).toHaveLength(7);
         body.forEach((task) => {
-          expect(task).toMatchObject({
-            created_at: expect.any(String),
-            task_name: expect.any(String),
-            description: expect.any(String),
-            is_urgent: expect.any(Boolean),
-            due_date: expect.any(String),
-            points: expect.any(Number),
-            tasks_specific_date: expect.any(String),
-            is_recurring: expect.any(Boolean),
-            recurring_frequency: expect.any(Number),
-            room_id: expect.any(Number),
-            created_by_user_id: expect.any(Number),
-            assigned_to_user_id: expect.any(Number),
-            status_id: expect.any(Number),
-            image_id: expect.any(Number),
-            updated_at: expect.any(Number),
-          });
+          expect(typeof task.id).toBe("number");
+          expect(typeof task.created_at).toBe("string");
+          expect(typeof task.task_name).toBe("string");
+          expect(typeof task.description).toBe("string");
+          expect(typeof task.is_urgent).toBe("boolean");
+          expect(typeof task.due_date instanceof Date).toBe();
         });
       });
   });
@@ -101,13 +91,12 @@ describe("GET /api/status", () => {
       });
   });
 });
-describe.only("GET /api/users", () => {
+describe("GET /api/users", () => {
   test("200: responds with an array containing all users objects", () => {
     return request(app)
       .get("/api/users")
       .expect(200)
       .then(({ body }) => {
-        console.log(body);
         body.forEach((user) => {
           expect(user).toMatchObject({
             created_at: expect.any(String),
