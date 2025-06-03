@@ -15,4 +15,9 @@ async function getUsers() {
     throw error;
   }
 }
+
+
+   
+
 module.exports = { getUsers };
+
