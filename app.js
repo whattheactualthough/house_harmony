@@ -1,11 +1,11 @@
 const express = require("express");
 const {
-  getApi,
   getUsers,
-  getTasks,
-  getStatus,
+ } = require("./app/controllers/users.controller");
+const { getApi } = require("./app/controllers/api.controller");
+const { getTasks  getStatus,
   getRooms,
-} = require("./app/controllers/dummy_controller");
+} = require("./app/controllers/tasks.controller");
 const app = express();
 
 app.get("/api", getApi);
