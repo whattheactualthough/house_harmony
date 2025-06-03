@@ -2,12 +2,9 @@ const { createClient } = require("@supabase/supabase-js");
 const { supabase_url, supabase_key } = require("./connection");
 
 async function getUsers() {
-
   try {
     const supabase = createClient(supabase_url, supabase_key);
-    const { data, error } = await supabase
-      .from("users")
-      .select("*");
+    const { data, error } = await supabase.from("users").select("*");
 
     if (error) {
       throw error;
@@ -18,6 +15,9 @@ async function getUsers() {
     throw error;
   }
 }
-module.exports = {getUsers};
+
 
    
+
+module.exports = { getUsers };
+
