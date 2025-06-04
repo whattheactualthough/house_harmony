@@ -144,7 +144,6 @@ describe("GET /api/points/:userId", () => {
     .get("/api/points/7")
     .expect(200)
     .then(({body})=>{
-      console.log(body)
       expect(body).toEqual({"UserId": "7", "Total Points": 30})
     })
   })

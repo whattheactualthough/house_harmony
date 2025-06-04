@@ -1,4 +1,7 @@
+
 const { selectAllTasksForGroup, selectTotalPointsForUser, selectTasksAssignedToUser}= require("../models/tasks.model");
+
+
 
 exports.getTasks = (req, res, next) => {
   return selectAllTasksForGroup("House Harmony Rd").then((result) => {
@@ -13,12 +16,12 @@ exports.getTasksByUserId = (req, res, next) => {
     }
     res.status(200).send(result)
   })
-  
+
+ 
 }
 exports.getPointsbyId = (req, res, next)=>{
   const {userId} = req.params
   return selectTotalPointsForUser(userId).then((points)=>{
     console.log(points)
     res.status(200).send({"UserId": userId, "Total Points": points})
-  })
 }
