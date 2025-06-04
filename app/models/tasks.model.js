@@ -12,5 +12,15 @@ exports.selectTasks = async() => {
     return data;
  
 }
+exports.selectTasksbyId = async(id) => {
 
+    const supabase = createClient(supabase_url, supabase_key);
+    const { data, error } = await supabase.from("tasks").select("*").eq("assigned_to_user_id", id);
+
+    if (error) {
+      throw error;
+    }
+    return data;
+ 
+}
 

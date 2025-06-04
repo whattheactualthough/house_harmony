@@ -109,7 +109,6 @@ describe("GET /api/users", () => {
       .get("/api/users")
       .expect(200)
       .then(({ body }) => {
-        console.log(body)
         body.forEach((user) => {
           expect(user).toMatchObject({
             created_at: expect.any(String),
@@ -123,5 +122,22 @@ describe("GET /api/users", () => {
   });
 });
 describe("GET /api/tasks/:userId", () => {
-  test()
+  test("200: responds with an array of all tasks assigned for that specific user", () => {
+    return request(app)
+    .get("/api/tasks/3")
+    .expect(200)
+    .then(({body})=>{
+      body.forEach((task)=>{
+        expect(task.assigned_to_user_id).toBe(3)
+      })
+    })
+  })
+  test("200: responds with an empty array if no tasks are assigned to that user", () => {
+    return request(app)
+    .get("/api/tasks/1")
+    .expect(200)
+    .then(({body})=>{
+      expect(body).toHaveLength(0)
+    })
+  })
 })
