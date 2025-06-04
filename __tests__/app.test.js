@@ -29,25 +29,22 @@ describe("GET /api/tasks", () => {
       .get("/api/tasks")
       .expect(200)
       .then(({ body }) => {
-        expect(body).toHaveLength(7);
+        expect(body).toHaveLength(8);
         body.forEach((task) => {
           expect(task).toHaveProperty("id");
-          expect(task).toHaveProperty("created_at");
           expect(task).toHaveProperty("task_name");
           expect(task).toHaveProperty("description");
           expect(task).toHaveProperty("is_urgent");
           expect(task).toHaveProperty("due_date");
           expect(task).toHaveProperty("task_specific_date");
           expect(task).toHaveProperty("is_recurring");
-          expect(task).toHaveProperty("recurring_frequency");
-          expect(task).toHaveProperty("room_id");
-          expect(task).toHaveProperty("created_by_user_id");
-          expect(task).toHaveProperty("assigned_to_user_id");
-          expect(task).toHaveProperty("status_id");
-          expect(task).toHaveProperty("task_complete_image_id");
+          expect(task).toHaveProperty("recurring_frequency")
+          expect(task).toHaveProperty("created_at");
           expect(task).toHaveProperty("updated_at");
-          expect(task).toHaveProperty("task_image_id");
-          expect(task).toHaveProperty("task_desirability_level_id");
+          expect(task).toHaveProperty("users");
+          expect(task).toHaveProperty("rooms");
+          expect(task).toHaveProperty("status");
+          expect(task).toHaveProperty("task_desirability_level");
         });
       });
   });
@@ -92,7 +89,7 @@ describe("GET /api/status", () => {
       .get("/api/status")
       .expect(200)
       .then(({ body }) => {
-        expect(body).toHaveLength(4);
+        expect(body).toHaveLength(5);
         body.forEach((status) => {
           expect(status).toMatchObject({
             id: expect.any(Number),
@@ -128,16 +125,27 @@ describe("GET /api/tasks/:userId", () => {
     .expect(200)
     .then(({body})=>{
       body.forEach((task)=>{
-        expect(task.assigned_to_user_id).toBe(3)
+        expect(task.users).toMatchObject({user_name: expect.any(String)})
       })
     })
   })
-  test("200: responds with an empty array if no tasks are assigned to that user", () => {
+  test("404: responds err message if user has no tasks assigned", () => {
     return request(app)
     .get("/api/tasks/1")
+    .expect(404)
+    .then(({body})=>{
+      expect(body).toEqual({msg: "No tasks found for user"})
+    })
+  })
+})
+describe("GET /api/points/:userId", () => {
+  test("200: responds with an object of total points for that user", () => {
+    return request(app)
+    .get("/api/points/7")
     .expect(200)
     .then(({body})=>{
-      expect(body).toHaveLength(0)
+      console.log(body)
+      expect(body).toEqual({"UserId": "7", "Total Points": 30})
     })
   })
 })
