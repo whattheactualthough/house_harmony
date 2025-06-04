@@ -1,7 +1,7 @@
 const {createClient} = require("@supabase/supabase-js");
 const {supabase_url, supabase_key} = require("../../db/connection")
 
-async function getStatus() {
+async function selectStatus() {
     try {
       const supabase = createClient(supabase_url, supabase_key);
       const { data, error } = await supabase
@@ -19,4 +19,4 @@ async function getStatus() {
   }
 
 
-  module.exports = {getStatus}
+  module.exports = {selectStatus}

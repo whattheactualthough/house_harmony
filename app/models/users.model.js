@@ -5,16 +5,20 @@ const supabase = createClient(supabase_url, supabase_key);
 exports.selectUsers = async () => {
 
 
+async function selectUsers() {
+
+
     const { data, error } = await supabase.from("users").select("*");
 
     if (error) {
         console.error("Error fetching users:", error);
         throw error;
     }
+
     return data;
 }
 
-exports.addUsers = async (users) => {
+function addUsers(users){
 
     const { data, error } = await supabase
         .from("users")
@@ -36,4 +40,6 @@ exports.addUsers = async (users) => {
 
 
 
+
+module.exports = { addUsers, selectUsers };
 
