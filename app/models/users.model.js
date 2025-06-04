@@ -2,7 +2,6 @@ const { createClient } = require("@supabase/supabase-js");
 const { supabase_url, supabase_key } = require("../../db/connection");
 const supabase = createClient(supabase_url, supabase_key);
 
-exports.selectUsers = async () => {
 
 
 async function selectUsers() {
@@ -18,7 +17,7 @@ async function selectUsers() {
     return data;
 }
 
-function addUsers(users){
+async function addUsers(users) {
 
     const { data, error } = await supabase
         .from("users")
