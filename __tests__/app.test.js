@@ -29,7 +29,6 @@ describe("GET /api/tasks", () => {
       .get("/api/tasks")
       .expect(200)
       .then(({ body }) => {
-        console.log(body);
         expect(body).toHaveLength(7);
         body.forEach((task) => {
           expect(task).toHaveProperty("id");
@@ -104,12 +103,13 @@ describe("GET /api/status", () => {
       });
   });
 });
-describe("GET /api/users", () => {
+describe.only("GET /api/users", () => {
   test("200: responds with an array containing all users objects", () => {
     return request(app)
       .get("/api/users")
       .expect(200)
       .then(({ body }) => {
+        console.log(body)
         body.forEach((user) => {
           expect(user).toMatchObject({
             created_at: expect.any(String),

@@ -10,6 +10,7 @@ exports.selectUsers = async() =>  {
         console.error("Error fetching users:", error);
         throw error;
     }
+    console.log(data, "users model data")
     return data;
 }
 
