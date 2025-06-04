@@ -99,7 +99,7 @@ exports.selectTotalPointsForUser = async (userId) => {
 
   return totalPoints;
 }
-exports.selectTasksbyId = async(id) => {
+
 
 
 /*const task = {
