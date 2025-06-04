@@ -29,7 +29,7 @@ describe("GET /api/tasks", () => {
       .get("/api/tasks")
       .expect(200)
       .then(({ body }) => {
-        expect(body).toHaveLength(7);
+        expect(body).toHaveLength(8);
         body.forEach((task) => {
           expect(task).toHaveProperty("id");
           expect(task).toHaveProperty("created_at");
@@ -138,6 +138,16 @@ describe("GET /api/tasks/:userId", () => {
     .expect(200)
     .then(({body})=>{
       expect(body).toHaveLength(0)
+    })
+  })
+})
+describe.only("GET /api/points/:userId", () => {
+  test("200: responds with an object of total points for that user", () => {
+    return request(app)
+    .get("/api/points/7")
+    .expect(200)
+    .then(({body})=>{
+      expect(body).toEqual({"UserId": 7, "Total Points": 30 })
     })
   })
 })

@@ -1,7 +1,7 @@
 const express = require("express");
 const { getUsers } = require("./app/controllers/users.controller");
 const { getApi } = require("./app/controllers/api.controller");
-const {getTasks, getTasksByUserId} = require("./app/controllers/tasks.controller");
+const {getTasks, getTasksByUserId, getPointsByUserId} = require("./app/controllers/tasks.controller");
 const { getStatus } = require("./app/controllers/status.controller");
 const { getRooms } = require("./app/controllers/rooms.controller");
 const app = express();
@@ -12,6 +12,7 @@ app.get("/api/users", getUsers);
 app.get("/api/status", getStatus);
 app.get("/api/rooms", getRooms);
 app.get("/api/tasks/:userId", getTasksByUserId)
+app.get("/api/points/:userId", getPointsByUserId)
 
 app.all("/*splat", (req, res) => {
   res.status(404).send({ msg: "Error Not Found" });
