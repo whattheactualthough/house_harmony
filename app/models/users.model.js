@@ -2,7 +2,9 @@ const { createClient } = require("@supabase/supabase-js");
 const { supabase_url, supabase_key } = require("../../db/connection");
 const supabase = createClient(supabase_url, supabase_key);
 
-exports.selectUsers = async () => {
+
+
+async function selectUsers() {
 
 
     const { data, error } = await supabase.from("users").select("*");
@@ -11,10 +13,11 @@ exports.selectUsers = async () => {
         console.error("Error fetching users:", error);
         throw error;
     }
+
     return data;
 }
 
-exports.addUsers = async (users) => {
+async function addUsers(users) {
 
     const { data, error } = await supabase
         .from("users")
@@ -36,4 +39,6 @@ exports.addUsers = async (users) => {
 
 
 
+
+module.exports = { addUsers, selectUsers };
 

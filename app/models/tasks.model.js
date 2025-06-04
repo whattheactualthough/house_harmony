@@ -99,6 +99,8 @@ exports.selectTotalPointsForUser = async (userId) => {
 
   return totalPoints;
 }
+exports.selectTasksbyId = async(id) => {
+
 
 /*const task = {
     task_name: "Clean Fridge",
@@ -114,4 +116,6 @@ exports.selectTotalPointsForUser = async (userId) => {
     status_id: 1, // Assuming status ID 1 exists
     task_desirability_level_id: 1 // Assuming desirability level ID 1 exists
 };  */
+
+
 
