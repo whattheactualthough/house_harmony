@@ -103,7 +103,7 @@ describe("GET /api/status", () => {
       });
   });
 });
-describe.only("GET /api/users", () => {
+describe("GET /api/users", () => {
   test("200: responds with an array containing all users objects", () => {
     return request(app)
       .get("/api/users")
@@ -122,3 +122,6 @@ describe.only("GET /api/users", () => {
       });
   });
 });
+describe("GET /api/tasks/:userId", () => {
+  test()
+})

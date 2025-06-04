@@ -1,7 +1,7 @@
 const { createClient } = require("@supabase/supabase-js");
 const { supabase_url, supabase_key } = require("../../db/connection");
 
-exports.selectUsers = async() =>  {
+async function selectUsers() {
 
     const supabase = createClient(supabase_url, supabase_key);
     const { data, error } = await supabase.from("users").select("*");
@@ -10,7 +10,7 @@ exports.selectUsers = async() =>  {
         console.error("Error fetching users:", error);
         throw error;
     }
-    console.log(data, "users model data")
+
     return data;
 }
 
@@ -39,6 +39,6 @@ async function addUsers(users) {
   .then(data => console.log("Users added successfully:", data))  
   .catch(error => console.error("Error adding users:", error));*/
 
-module.exports = { addUsers };
+module.exports = { addUsers, selectUsers };
   
 
