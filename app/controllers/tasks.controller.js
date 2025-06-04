@@ -24,4 +24,5 @@ exports.getPointsbyId = (req, res, next)=>{
   return selectTotalPointsForUser(userId).then((points)=>{
     console.log(points)
     res.status(200).send({"UserId": userId, "Total Points": points})
+  })
 }
