@@ -16,14 +16,10 @@ exports.getPointsByUserId = (req, res, next) => {
   const {userId} = req.params
   let totalPoints = 0
   return selectTasksbyId(userId).then((result)=>{
-    console.log(result)
-    result.forEach((task)=>{
-      if(task.status_id===4){
-        return selectPointsById(task.task_desirability_level_id)
-        .then((result)=>{
-          totalPoints += result[0].points
-        }).Promise.all(task).then(()=>(console.log(totalPoints)))
-      }
+    const filteredTasks = result.filter((task)=>task.status_id===4)
+    const pointsArray = filteredTasks.map((task)=>{
+      return selectPointsById(task.task_desirability_level_id).then((result)=>totalPoints += result[0].points)
     })
+    return Promise.all(pointsArray).then(()=> res.status(200).send({"UserId": userId, "Total Points": totalPoints}))
   })
 }

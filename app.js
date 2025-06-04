@@ -14,6 +14,13 @@ app.get("/api/rooms", getRooms);
 app.get("/api/tasks/:userId", getTasksByUserId)
 app.get("/api/points/:userId", getPointsByUserId)
 
+app.use((err, req, res, next) => {
+  if (err.status && err.msg) {
+    res.status(err.status).send({ msg: err.msg });
+  } else {
+    next(err);
+  }
+});
 app.all("/*splat", (req, res) => {
   res.status(404).send({ msg: "Error Not Found" });
 });
