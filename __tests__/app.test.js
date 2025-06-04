@@ -32,22 +32,19 @@ describe("GET /api/tasks", () => {
         expect(body).toHaveLength(8);
         body.forEach((task) => {
           expect(task).toHaveProperty("id");
-          expect(task).toHaveProperty("created_at");
           expect(task).toHaveProperty("task_name");
           expect(task).toHaveProperty("description");
           expect(task).toHaveProperty("is_urgent");
           expect(task).toHaveProperty("due_date");
           expect(task).toHaveProperty("task_specific_date");
           expect(task).toHaveProperty("is_recurring");
-          expect(task).toHaveProperty("recurring_frequency");
-          expect(task).toHaveProperty("room_id");
-          expect(task).toHaveProperty("created_by_user_id");
-          expect(task).toHaveProperty("assigned_to_user_id");
-          expect(task).toHaveProperty("status_id");
-          expect(task).toHaveProperty("task_complete_image_id");
+          expect(task).toHaveProperty("recurring_frequency")
+          expect(task).toHaveProperty("created_at");
           expect(task).toHaveProperty("updated_at");
-          expect(task).toHaveProperty("task_image_id");
-          expect(task).toHaveProperty("task_desirability_level_id");
+          expect(task).toHaveProperty("users");
+          expect(task).toHaveProperty("rooms");
+          expect(task).toHaveProperty("status");
+          expect(task).toHaveProperty("task_desirability_level");
         });
       });
   });
@@ -128,7 +125,7 @@ describe("GET /api/tasks/:userId", () => {
     .expect(200)
     .then(({body})=>{
       body.forEach((task)=>{
-        expect(task.assigned_to_user_id).toBe(3)
+        expect(task.users).toMatchObject({user_name: expect.any(String)})
       })
     })
   })

@@ -1,7 +1,10 @@
 const express = require("express");
 const { getUsers } = require("./app/controllers/users.controller");
 const { getApi } = require("./app/controllers/api.controller");
-const {getTasks, getTasksByUserId, getPointsByUserId} = require("./app/controllers/tasks.controller");
+
+const {getPointsbyId, getTasksByUserId, getTasks} = require("./app/controllers/tasks.controller");
+
+
 const { getStatus } = require("./app/controllers/status.controller");
 const { getRooms } = require("./app/controllers/rooms.controller");
 const app = express();
@@ -12,7 +15,9 @@ app.get("/api/users", getUsers);
 app.get("/api/status", getStatus);
 app.get("/api/rooms", getRooms);
 app.get("/api/tasks/:userId", getTasksByUserId)
-app.get("/api/points/:userId", getPointsByUserId)
+
+app.get("/api/points/:userId", getPointsbyId)
+
 
 app.use((err, req, res, next) => {
   if (err.status && err.msg) {
