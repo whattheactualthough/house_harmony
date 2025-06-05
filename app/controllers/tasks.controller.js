@@ -1,5 +1,5 @@
 
-const { selectAllTasksForGroup, selectTotalPointsForUser, selectTasksAssignedToUser}= require("../models/tasks.model");
+const { selectAllTasksForGroup, selectTotalPointsForUser, selectTasksAssignedToUser, addTask}= require("../models/tasks.model");
 
 
 
@@ -22,7 +22,18 @@ exports.getTasksByUserId = (req, res, next) => {
 exports.getPointsbyId = (req, res, next)=>{
   const {userId} = req.params
   return selectTotalPointsForUser(userId).then((points)=>{
-    console.log(points)
     res.status(200).send({"UserId": userId, "Total Points": points})
+  })
+}
+exports.postTask = (req, res, next) => {
+  const body = req.body
+  return addTask(body).then((task)=>{
+    res.status(201).send(task)
+  })
+}
+exports.removeTaskbyId = (req, res, next) => {
+  const {userId} = req.params
+  return deleteTaskById(userId).then((data)=>{
+    res.status(204).send(data)
   })
 }
