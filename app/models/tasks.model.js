@@ -1,4 +1,6 @@
-const { supabase } = require("../../db/supabaseConfig");
+const { createClient } = require("@supabase/supabase-js");
+const { supabase_url, supabase_key } = require("../../db/connection");
+const supabase = createClient(supabase_url, supabase_key);
 
 async function selectAllTasksForGroup(groupName) {
   const { data, error } = await supabase
