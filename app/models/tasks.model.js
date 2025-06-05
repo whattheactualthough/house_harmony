@@ -347,5 +347,6 @@ module.exports = {
   selectAllIncompleteTasks,
   selectTasksByStatusId,
   selectTaskById,
-  updateTaskStatus
+  updateTaskStatus,
+  deleteTaskById
 };
