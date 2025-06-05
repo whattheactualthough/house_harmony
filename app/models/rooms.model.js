@@ -1,29 +1,22 @@
-
-const { supabase } = require("../../db/supabaseConfig")
+// app/models/rooms.model.js
+const { supabase } = require("../../db/supabaseConfig");
 
 exports.selectRooms = async () => {
-
-  const { data, error } = await supabase
-    .from('rooms')
-    .select('*');
-
-  if (error) {
-    throw error;
-  }
+  const { data, error } = await supabase.from("rooms").select("*");
+  if (error) throw error;
   return data;
+};
 
-}
-
-//addRoom function to add a room to the rooms table
 exports.addRoom = async (room) => {
- 
-  const { data, error } = await supabase
-    .from('rooms')
-    .insert(room);
-
-  if (error) {
-    throw error;
+  if (!room.room_name) {
+    const err = new Error("Missing room_name in request body");
+    err.status = 400;
+    throw err;
   }
-  return data;
-}
-
+  const { data, error } = await supabase
+    .from("rooms")
+    .insert([room])
+    .select("*");
+  if (error) throw error;
+  return data[0];
+};
