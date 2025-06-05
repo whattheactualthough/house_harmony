@@ -33,7 +33,7 @@ exports.postTask = (req, res, next) => {
 }
 exports.removeTaskbyId = (req, res, next) => {
   const {userId} = req.params
-  return deleteTaskById.then((data)=>{
+  return deleteTaskById(userId).then((data)=>{
     res.status(204).send(data)
   })
 }
