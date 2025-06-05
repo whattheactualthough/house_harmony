@@ -1,9 +1,9 @@
-const {createClient} = require("@supabase/supabase-js");
-const {supabase_url, supabase_key} = require("../../db/connection")
+
+const {supabase} = require("../../db/supabaseConfig");
 
 async function selectStatus() {
     try {
-      const supabase = createClient(supabase_url, supabase_key);
+    
       const { data, error } = await supabase
         .from('status')
         .select('*');
