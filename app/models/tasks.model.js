@@ -1,6 +1,6 @@
-const { createClient } = require("@supabase/supabase-js");
-const { supabase_url, supabase_key } = require("../../db/connection");
-const supabase = createClient(supabase_url, supabase_key);
+// models/tasks.model.js
+
+const { supabase } = require("../../db/supabaseConfig");
 
 async function selectAllTasksForGroup(groupName) {
   const { data, error } = await supabase
@@ -78,11 +78,7 @@ async function selectTasksAssignedToUser(userId) {
 async function selectTotalPointsForUser(userId) {
   const { data, error } = await supabase
     .from("tasks")
-    .select(
-      `
-            task_desirability_level(points)
-        `,
-    )
+    .select(`task_desirability_level(points)`)
     .eq("assigned_to_user_id", userId)
     .eq("status_id", 4);
 
