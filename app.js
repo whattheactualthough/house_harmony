@@ -10,6 +10,7 @@ const {
   postTask,
   removeTaskbyId,
   patchTaskStatus,
+  patchAssignedUserId,
 } = require("./app/controllers/tasks.controller");
 const { getStatus } = require("./app/controllers/status.controller");
 const { getRooms, postRoom } = require("./app/controllers/rooms.controller");
@@ -24,6 +25,7 @@ app.get("/api/tasks", getTasks);
 app.post("/api/tasks", postTask);
 app.delete("/api/tasks/:userId", removeTaskbyId);
 app.patch("/api/tasks/:taskId/status", patchTaskStatus);
+app.patch("/api/tasks/:taskId", patchAssignedUserId)
 
 // Users & Points
 app.get("/api/users", getUsers);

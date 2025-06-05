@@ -5,7 +5,13 @@ const {
   addTask,
   deleteTaskById,
   updateTaskStatus,
+
+  updateAssignedUser,
+  selectTaskById,
+
+
 } = require("../models/tasks.model");
+
 
 // GET all tasks
 exports.getTasks = (req, res, next) => {
@@ -94,3 +100,12 @@ exports.patchTaskStatus = async (req, res, next) => {
     next(err);
   }
 };
+exports.patchAssignedUserId = (req, res, next) => {
+  const {taskId} = req.params
+  const {assigned_to_user_id} = req.body
+  return updateAssignedUser(taskId, assigned_to_user_id).then(()=>{
+    return selectTaskById(taskId).then((data)=>{
+      res.status(400).send({data})
+    })
+  })
+}
