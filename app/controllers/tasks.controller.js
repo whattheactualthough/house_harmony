@@ -31,3 +31,9 @@ exports.postTask = (req, res, next) => {
     res.status(201).send(task)
   })
 }
+exports.removeTaskbyId = (req, res, next) => {
+  const {userId} = req.params
+  return deleteTaskById.then((data)=>{
+    res.status(204).send(data)
+  })
+}

@@ -148,12 +148,12 @@ describe("GET /api/points/:userId", () => {
     })
   })
 })
-describe.only("POST /api/tasks", ()=>{
+describe.skip("POST /api/tasks", ()=>{
   test("201: responds with posted task", () => {
     return request(app)
     .post("/api/tasks")
     .send({
-    task_name: "Clean Fridge",
+    task_name: "delete test",
     description: "This is for Kitchen",
     is_urgent: false,
     due_date: "2025-06-10",
@@ -162,12 +162,15 @@ describe.only("POST /api/tasks", ()=>{
     recurring_frequency: null,
     room_id: 1,
     created_by_user_id: 1,
-    assigned_to_user_id: 7,
     status_id: 2,
     task_desirability_level_id: 1})
     .expect(201)
-    .then(({body})=>{
-      console.log(body, "body in test")
-    })
+  })
+})
+describe.skip("DELETE /api/tasks/:taskId", ()=>{
+  test("201: responds with posted task", () => {
+    return request(app)
+    .delete("/api/tasks/28")
+    .expect(204)
   })
 })

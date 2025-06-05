@@ -2,7 +2,7 @@ const express = require("express");
 const { getUsers } = require("./app/controllers/users.controller");
 const { getApi } = require("./app/controllers/api.controller");
 
-const {getPointsbyId, getTasksByUserId, getTasks, postTask} = require("./app/controllers/tasks.controller");
+const {getPointsbyId, getTasksByUserId, getTasks, postTask, removeTaskbyId} = require("./app/controllers/tasks.controller");
 
 
 const { getStatus } = require("./app/controllers/status.controller");
@@ -17,6 +17,7 @@ app.get("/api/rooms", getRooms);
 app.get("/api/tasks/:userId", getTasksByUserId)
 app.get("/api/points/:userId", getPointsbyId)
 app.post("/api/tasks", postTask)
+app.delete("api/tasks/:userId", removeTaskbyId)
 
 
 app.use((err, req, res, next) => {
