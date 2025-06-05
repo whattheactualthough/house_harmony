@@ -1,5 +1,5 @@
 
-const { supabase } = require("../../db/connection");
+const { supabase } = require("../../db/supabaseConfig");
 
 
 const selectPointsById = async (id) => {
