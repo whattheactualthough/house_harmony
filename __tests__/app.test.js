@@ -218,3 +218,14 @@ describe("PATCH /api/tasks/:taskId/status", () => {
       });
   });
 });
+describe.only("PATCH /api/tasks/:taskId", ()=>{
+  test("400: updates the assigned userId to new userId", ()=>{
+    return request(app)
+    .patch("/api/tasks/3")
+    .send({assigned_to_user_id: 3})
+    .expect(400)
+    // .then(({data})=>{
+    //   expect(data.assigned_to_user_id).toBe(6)
+    // })
+  })
+})

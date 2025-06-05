@@ -11,6 +11,7 @@ const {
   postTask,
   removeTaskbyId,
   patchTaskStatus,
+  patchAssignedUserId,
 } = require("./app/controllers/tasks.controller");
 const { getStatus } = require("./app/controllers/status.controller");
 const { getRooms } = require("./app/controllers/rooms.controller");
@@ -26,6 +27,7 @@ app.get("/api/points/:userId", getPointsbyId);
 app.post("/api/tasks", postTask);
 app.delete("/api/tasks/:userId", removeTaskbyId);
 app.patch("/api/tasks/:taskId/status", patchTaskStatus);
+app.patch("/api/tasks/:taskId", patchAssignedUserId)
 
 // General error handler (for next(err))
 app.use((err, req, res, next) => {
