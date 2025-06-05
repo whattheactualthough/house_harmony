@@ -1,5 +1,3 @@
-// models/tasks.model.js
-
 const { supabase } = require("../../db/supabaseConfig");
 
 async function selectAllTasksForGroup(groupName) {
@@ -7,21 +5,21 @@ async function selectAllTasksForGroup(groupName) {
     .from("tasks")
     .select(
       `
-            id,
-            task_name,
-            description,
-            is_urgent,
-            due_date,
-            task_specific_date,
-            is_recurring,
-            recurring_frequency,
-            rooms(room_name),
-            users!created_by_user_id(user_name),          
-            status(description),
-            task_desirability_level(level,points),          
-            created_at,
-            updated_at
-        `,
+      id,
+      task_name,
+      description,
+      is_urgent,
+      due_date,
+      task_specific_date,
+      is_recurring,
+      recurring_frequency,
+      rooms(room_name),
+      users!created_by_user_id(user_name),          
+      status(description),
+      task_desirability_level(level,points),          
+      created_at,
+      updated_at
+    `,
     )
     .eq("users.group_name", groupName)
     .order("due_date", { ascending: true })
@@ -48,21 +46,21 @@ async function selectTasksAssignedToUser(userId) {
     .from("tasks")
     .select(
       `
-            id,
-            task_name,
-            description,
-            is_urgent,
-            due_date,
-            task_specific_date,
-            is_recurring,
-            recurring_frequency,
-            rooms(room_name),          
-            users!assigned_to_user_id(user_name), 
-            status(description),
-            task_desirability_level(level,points),          
-            created_at,
-            updated_at
-        `,
+      id,
+      task_name,
+      description,
+      is_urgent,
+      due_date,
+      task_specific_date,
+      is_recurring,
+      recurring_frequency,
+      rooms(room_name),          
+      users!assigned_to_user_id(user_name), 
+      status(description),
+      task_desirability_level(level,points),          
+      created_at,
+      updated_at
+    `,
     )
     .eq("assigned_to_user_id", userId)
     .order("due_date", { ascending: true })
@@ -113,21 +111,21 @@ async function selectTasksForRoom(roomId) {
     .from("tasks")
     .select(
       `
-            id,
-            task_name,
-            description,
-            is_urgent,
-            due_date,
-            task_specific_date,
-            is_recurring,
-            recurring_frequency,
-            rooms(room_name),
-            users!created_by_user_id(user_name),          
-            status(description),
-            task_desirability_level(level,points),          
-            created_at,
-            updated_at
-        `,
+      id,
+      task_name,
+      description,
+      is_urgent,
+      due_date,
+      task_specific_date,
+      is_recurring,
+      recurring_frequency,
+      rooms(room_name),
+      users!created_by_user_id(user_name),          
+      status(description),
+      task_desirability_level(level,points),          
+      created_at,
+      updated_at
+    `,
     )
     .eq("room_id", roomId)
     .order("due_date", { ascending: true })
@@ -145,21 +143,21 @@ async function selectAllIncompleteTasks() {
     .from("tasks")
     .select(
       `
-            id,
-            task_name,
-            description,
-            is_urgent,
-            due_date,
-            task_specific_date,
-            is_recurring,
-            recurring_frequency,
-            rooms(room_name),
-            users!assigned_to_user_id(user_name),          
-            status(description),
-            task_desirability_level(level,points),          
-            created_at,
-            updated_at
-        `,
+      id,
+      task_name,
+      description,
+      is_urgent,
+      due_date,
+      task_specific_date,
+      is_recurring,
+      recurring_frequency,
+      rooms(room_name),
+      users!assigned_to_user_id(user_name),          
+      status(description),
+      task_desirability_level(level,points),          
+      created_at,
+      updated_at
+    `,
     )
     .eq("status_id", 5);
 
@@ -175,21 +173,21 @@ async function selectTasksByStatusId(statusId) {
     .from("tasks")
     .select(
       `
-            id,
-            task_name,
-            description,
-            is_urgent,
-            due_date,
-            task_specific_date,
-            is_recurring,
-            recurring_frequency,
-            rooms(room_name),
-            users!created_by_user_id(user_name),          
-            status(description),
-            task_desirability_level(level,points),          
-            created_at,
-            updated_at
-        `,
+      id,
+      task_name,
+      description,
+      is_urgent,
+      due_date,
+      task_specific_date,
+      is_recurring,
+      recurring_frequency,
+      rooms(room_name),
+      users!created_by_user_id(user_name),          
+      status(description),
+      task_desirability_level(level,points),          
+      created_at,
+      updated_at
+    `,
     )
     .eq("status_id", statusId)
     .order("due_date", { ascending: true })
@@ -206,23 +204,23 @@ async function selectTaskById(taskId) {
     .from("tasks")
     .select(
       `
-            id,
-            task_name,
-            description,
-            is_urgent,
-            due_date,
-            task_specific_date,
-            is_recurring,
-            recurring_frequency,
-            room_id,
-            created_by_user_id,
-            rooms(room_name),
-            users!created_by_user_id(user_name),          
-            status(description),
-            task_desirability_level(level,points),          
-            created_at,
-            updated_at
-        `,
+      id,
+      task_name,
+      description,
+      is_urgent,
+      due_date,
+      task_specific_date,
+      is_recurring,
+      recurring_frequency,
+      room_id,
+      created_by_user_id,
+      rooms(room_name),
+      users!created_by_user_id(user_name),          
+      status(description),
+      task_desirability_level(level,points),          
+      created_at,
+      updated_at
+    `,
     )
     .eq("id", taskId)
     .single();
