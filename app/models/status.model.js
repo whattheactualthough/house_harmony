@@ -1,5 +1,5 @@
 
-const {supabase} = require("../../db/connection")
+const {supabase} = require("../../db/supabaseConfig");
 
 async function selectStatus() {
     try {
