@@ -1,8 +1,8 @@
-const { createClient } = require("@supabase/supabase-js");
-const { supabase_url, supabase_key } = require("../../db/connection");
-const supabase = createClient(supabase_url, supabase_key);
 
-const selectPointsById = async(id)=>{
+const { supabase } = require("../../db/connection");
+
+
+const selectPointsById = async (id) => {
     const { data, error } = await supabase.from("task_desirability_level").select("*").eq("id", id);
     if (error) {
         console.error("Error fetching users:", error);
@@ -10,4 +10,4 @@ const selectPointsById = async(id)=>{
     }
     return data;
 }
-module.exports = {selectPointsById}
+module.exports = { selectPointsById }

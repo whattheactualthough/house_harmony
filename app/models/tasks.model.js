@@ -1,5 +1,5 @@
-const { createClient } = require("@supabase/supabase-js");
-const { supabase_url, supabase_key } = require("../../db/connection");
+
+const { supabase } = require("../../db/supabaseConfig");
 //write select query fo tasks table with supabase 
 //tasks table should return id, task_name, description,is_urgent, due_date,
 // task_speific_date, is_recurring, recurring_frequency, room_name(foreign key from rooms),
@@ -7,7 +7,7 @@ const { supabase_url, supabase_key } = require("../../db/connection");
 //status(fore_key from status), task_desitability_level(foreign key from task_desirability_level)
 //created_on, updated_on
 // and return the data in an array of objects for a group named "House Harmony Rd"
-const supabase = createClient(supabase_url, supabase_key);
+
 
 
 async function selectAllTasksForGroup(groupName) {
@@ -347,5 +347,6 @@ module.exports = {
   selectAllIncompleteTasks,
   selectTasksByStatusId,
   selectTaskById,
-  updateTaskStatus
+  updateTaskStatus,
+  deleteTaskById
 };
