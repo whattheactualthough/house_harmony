@@ -246,7 +246,7 @@ describe("PATCH /api/tasks/:taskId", () => {
 });
 //test("POST /api/images", () => {
 describe("POST /api/images", () => {
-  test("201: uploads an image and returns the upload data", async () => {
+  test.skip("201: uploads an image and returns the upload data", async () => {
     const imagePath =
       "/home/kiran/project/house_harmony/app/images/house_harmony.png";
     const image = fs.readFileSync(imagePath);

@@ -1,10 +1,9 @@
 const express = require("express");
 const cors = require("cors");
-const multer = require("multer");
 const app = express();
 
-const { getUsers } = require("./app/controllers/users.controller");
 const { getApi } = require("./app/controllers/api.controller");
+const { getUsers } = require("./app/controllers/users.controller");
 const {
   getPointsById,
   getTasksByUserId,
@@ -17,11 +16,9 @@ const {
 } = require("./app/controllers/tasks.controller");
 const { getStatus } = require("./app/controllers/status.controller");
 const { getRooms, postRoom } = require("./app/controllers/rooms.controller");
-const {postImage} = require("./app/controllers/images.controller");
 
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 app.get("/api", getApi);
 
@@ -38,22 +35,11 @@ app.get("/api/status", getStatus);
 app.get("/api/rooms", getRooms);
 app.post("/api/rooms", postRoom);
 
-
-//post image
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
-app.post("/api/images", upload.single("image"), postImage)
-
-
-
-// Error handler
-
 app.get("/api/tasks/:userId", getTasksByUserId);
 app.get("/api/points/:userId", getPointsById);
 
 app.patch("/api/tasks/:taskId/status", patchTaskStatus);
 app.patch("/api/tasks/:taskId", patchTask);
-
 
 app.use((err, req, res, next) => {
   if (err.status && err.msg) {
@@ -63,7 +49,6 @@ app.use((err, req, res, next) => {
   }
 });
 
-// catch-all for any route not matched above:
 app.use((req, res) => {
   res.status(404).send({ msg: "Error Not Found" });
 });
