@@ -238,16 +238,17 @@ describe("PATCH /api/tasks/:taskId", () => {
     return request(app)
       .patch("/api/tasks/3")
       .send({ assigned_to_user_id: 3 })
-      .expect(400)
+      .expect(400);
     // .then(({data})=>{
     //   expect(data.assigned_to_user_id).toBe(6)
     // })
-  })
-})
+  });
+});
 //test("POST /api/images", () => {
 describe("POST /api/images", () => {
   test("201: uploads an image and returns the upload data", async () => {
-    const imagePath = '/home/kiran/project/house_harmony/app/images/house_harmony.png'
+    const imagePath =
+      "/home/kiran/project/house_harmony/app/images/house_harmony.png";
     const image = fs.readFileSync(imagePath);
     return request(app)
       .post("/api/images")
@@ -258,12 +259,9 @@ describe("POST /api/images", () => {
         expect(body.path).toBe("house_harmony.png");
         expect(body).toHaveProperty("id");
         expect(body).toHaveProperty("fullPath");
-
       });
-  })
+  });
 });
-
-<<<<<<< HEAD
 // ------- NEW TESTS FOR FILTER BY ROOM --------
 
 describe("GET /api/tasks/room/:roomId", () => {
@@ -291,5 +289,3 @@ describe("GET /api/tasks/room/:roomId", () => {
       });
   });
 });
-=======
->>>>>>> 1cc170915f0f503ad33c571dcddc178cdbd18fdf
