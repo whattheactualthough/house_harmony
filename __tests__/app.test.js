@@ -207,7 +207,7 @@ describe("PATCH /api/tasks/:taskId/status", () => {
       });
   });
 });
-describe.only("PATCH /api/tasks/:taskId", () => {
+describe("PATCH /api/tasks/:taskId", () => {
   test("400: updates the assigned userId to new userId", () => {
     return request(app)
       .patch("/api/tasks/3")
