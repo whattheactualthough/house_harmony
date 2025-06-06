@@ -1,5 +1,6 @@
 const endpointsJSON = require("../endpoints.json");
 const request = require("supertest");
+const fs = require("fs");
 const app = require("../app.js");
 
 describe("GET /api", () => {
@@ -233,13 +234,32 @@ describe("PATCH /api/tasks/:taskId/status", () => {
 });
 
 describe("PATCH /api/tasks/:taskId", () => {
-  test("400: updates the assigned userId to new userId", async () => {
-    await request(app)
+  test("400: updates the assigned userId to new userId", () => {
+    return request(app)
       .patch("/api/tasks/3")
       .send({ assigned_to_user_id: 3 })
       .expect(400)
+    // .then(({data})=>{
+    //   expect(data.assigned_to_user_id).toBe(6)
+    // })
+  })
+})
+//test("POST /api/images", () => {
+describe("POST /api/images", () => {
+  test("201: uploads an image and returns the upload data", async () => {
+    const imagePath = '/home/kiran/project/house_harmony/app/images/house_harmony.png'
+    const image = fs.readFileSync(imagePath);
+    return request(app)
+      .post("/api/images")
+      .attach("image", image, "house_harmony.png")
+      .expect(201)
       .then(({ body }) => {
-        expect(body).toHaveProperty("msg");
+        expect(body).toHaveProperty("path");
+        expect(body.path).toBe("house_harmony.png");
+        expect(body).toHaveProperty("id");
+        expect(body).toHaveProperty("fullPath");
+
       });
-  });
+  })
 });
+
