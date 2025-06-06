@@ -180,7 +180,7 @@ describe.skip("POST /api/tasks", () => {
 });
 
 describe.skip("DELETE /api/tasks/:taskId", () => {
-  test("201: responds with posted task", () => {
+  test("204: deletes a task", () => {
     return request(app).delete("/api/tasks/28").expect(204);
   });
 });
@@ -240,6 +240,34 @@ describe("PATCH /api/tasks/:taskId", () => {
       .expect(400)
       .then(({ body }) => {
         expect(body).toHaveProperty("msg");
+      });
+  });
+});
+
+// ------- NEW TESTS FOR FILTER BY ROOM --------
+
+describe("GET /api/tasks/room/:roomId", () => {
+  test("200: responds with an array of tasks for a valid roomId", () => {
+    return request(app)
+      .get("/api/tasks/room/1") // replace 1 with a roomId present in your test DB
+      .expect(200)
+      .then(({ body }) => {
+        expect(Array.isArray(body)).toBe(true);
+        // If there are tasks in room 1, each should include a `rooms` object
+        body.forEach((task) => {
+          expect(task).toHaveProperty("rooms");
+          expect(task.rooms).toHaveProperty("room_name", expect.any(String));
+        });
+      });
+  });
+
+  test("200: responds with an empty array if no tasks exist for that room", () => {
+    return request(app)
+      .get("/api/tasks/room/99999") // use an ID that definitely has no tasks
+      .expect(200)
+      .then(({ body }) => {
+        expect(Array.isArray(body)).toBe(true);
+        expect(body).toEqual([]);
       });
   });
 });
