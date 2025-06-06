@@ -1,14 +1,6 @@
 const { supabase } = require("../../db/supabaseConfig");
-//write select query fo tasks table with supabase 
-//tasks table should return id, task_name, description,is_urgent, due_date,
-// task_speific_date, is_recurring, recurring_frequency, room_name(foreign key from rooms),
-// created_by_user(foreign key from users), assined _to_user(foreign key from users),
-//status(fore_key from status), task_desitability_level(foreign key from task_desirability_level)
-//created_on, updated_on
-// and return the data in an array of objects for a group named "House Harmony Rd"
 
-
-
+// Get all tasks for a group
 async function selectAllTasksForGroup(groupName) {
   const { data, error } = await supabase
     .from("tasks")
@@ -41,6 +33,7 @@ async function selectAllTasksForGroup(groupName) {
   return data;
 }
 
+// Add a task
 async function addTask(task) {
   const { data, error } = await supabase.from("tasks").insert(task).select("*");
   if (error) {
@@ -50,6 +43,7 @@ async function addTask(task) {
   return data;
 }
 
+// Get tasks assigned to a user
 async function selectTasksAssignedToUser(userId) {
   const { data, error } = await supabase
     .from("tasks")
@@ -82,6 +76,7 @@ async function selectTasksAssignedToUser(userId) {
   return data;
 }
 
+// Get total points for a user
 async function selectTotalPointsForUser(userId) {
   const { data, error } = await supabase
     .from("tasks")
@@ -102,11 +97,13 @@ async function selectTotalPointsForUser(userId) {
   return totalPoints;
 }
 
+// Update assigned user
 async function updateAssignedUser(taskId, newAssignedUserId) {
   const { data, error } = await supabase
     .from("tasks")
     .update({ assigned_to_user_id: newAssignedUserId })
-    .eq("id", taskId);
+    .eq("id", taskId)
+    .select("*");
 
   if (error) {
     console.error("Error updating assigned user:", error);
@@ -115,6 +112,7 @@ async function updateAssignedUser(taskId, newAssignedUserId) {
   return data;
 }
 
+// Get tasks for a room
 async function selectTasksForRoom(roomId) {
   const { data, error } = await supabase
     .from("tasks")
@@ -147,6 +145,7 @@ async function selectTasksForRoom(roomId) {
   return data;
 }
 
+// Get all incomplete tasks
 async function selectAllIncompleteTasks() {
   const { data, error } = await supabase
     .from("tasks")
@@ -177,6 +176,7 @@ async function selectAllIncompleteTasks() {
   return data;
 }
 
+// Get tasks by status ID
 async function selectTasksByStatusId(statusId) {
   const { data, error } = await supabase
     .from("tasks")
@@ -208,6 +208,7 @@ async function selectTasksByStatusId(statusId) {
   return data;
 }
 
+// Get task by id
 async function selectTaskById(taskId) {
   const { data, error } = await supabase
     .from("tasks")
@@ -223,6 +224,7 @@ async function selectTaskById(taskId) {
       recurring_frequency,
       room_id,
       created_by_user_id,
+      assigned_to_user_id,
       rooms(room_name),
       users!created_by_user_id(user_name),          
       status(description),
@@ -232,7 +234,7 @@ async function selectTaskById(taskId) {
     `,
     )
     .eq("id", taskId)
-    .single();
+    .maybeSingle();
 
   if (error) {
     console.error("Error fetching task by ID:", error);
@@ -241,6 +243,7 @@ async function selectTaskById(taskId) {
   return data;
 }
 
+// Update task status
 async function updateTaskStatus(taskId, newStatusId) {
   const { data, error } = await supabase
     .from("tasks")
@@ -261,6 +264,7 @@ async function updateTaskStatus(taskId, newStatusId) {
 
 async function createNewTask(taskId) {
   const completedTask = await selectTaskById(taskId);
+  if (!completedTask) return;
   const dueDate = new Date(completedTask.due_date);
   dueDate.setDate(dueDate.getDate() + completedTask.recurring_frequency);
 
@@ -281,11 +285,13 @@ async function createNewTask(taskId) {
   await addTask(newTask);
 }
 
+// Delete task by id
 async function deleteTaskById(taskId) {
   const { data, error } = await supabase
     .from("tasks")
     .delete()
-    .eq("id", taskId);
+    .eq("id", taskId)
+    .select("*");
 
   if (error) {
     console.error("Error deleting task by ID:", error);
@@ -305,6 +311,5 @@ module.exports = {
   selectTasksByStatusId,
   selectTaskById,
   updateTaskStatus,
-  deleteTaskById
+  deleteTaskById,
 };
-
