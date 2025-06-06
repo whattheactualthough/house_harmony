@@ -10,36 +10,31 @@ const {
   postTask,
   removeTaskbyId,
   patchTaskStatus,
-  patchAssignedUserId,
+  patchAssignedUser,
 } = require("./app/controllers/tasks.controller");
 const { getStatus } = require("./app/controllers/status.controller");
 const { getRooms, postRoom } = require("./app/controllers/rooms.controller");
 
 app.use(express.json());
 
-// API docs
 app.get("/api", getApi);
-
-// Tasks
 app.get("/api/tasks", getTasks);
 app.post("/api/tasks", postTask);
-app.delete("/api/tasks/:userId", removeTaskbyId);
-app.patch("/api/tasks/:taskId/status", patchTaskStatus);
-app.patch("/api/tasks/:taskId", patchAssignedUserId)
+app.delete("/api/tasks/:taskId", removeTaskbyId);
 
-// Users & Points
 app.get("/api/users", getUsers);
-app.get("/api/tasks/:userId", getTasksByUserId);
-app.get("/api/points/:userId", getPointsbyId);
 
-// Status
 app.get("/api/status", getStatus);
 
-// Rooms
 app.get("/api/rooms", getRooms);
 app.post("/api/rooms", postRoom);
 
-// Error handler
+app.get("/api/tasks/:userId", getTasksByUserId);
+app.get("/api/points/:userId", getPointsbyId);
+
+app.patch("/api/tasks/:taskId/status", patchTaskStatus);
+app.patch("/api/tasks/:taskId", patchAssignedUser);
+
 app.use((err, req, res, next) => {
   if (err.status && err.msg) {
     res.status(err.status).send({ msg: err.msg });
@@ -48,7 +43,6 @@ app.use((err, req, res, next) => {
   }
 });
 
-// 404 handler for all other routes (THIS IS THE RIGHT WAY)
 app.use((req, res) => {
   res.status(404).send({ msg: "Error Not Found" });
 });

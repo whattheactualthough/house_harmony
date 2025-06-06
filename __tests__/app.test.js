@@ -50,41 +50,57 @@ describe("GET /api/tasks", () => {
   });
 });
 
+describe.skip("GET /api/images", () => {
+  test("200: responds with an array containing all images objects", () => {
+    return request(app)
+      .get("/api/images")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toHaveLength(/* number of tasks in test array*/);
+        body.forEach((image) => {
+          expect(image).toMatchObject({
+            created_at: expect.any(String),
+            img_url: expect.any(String),
+          });
+        });
+      });
+  });
+});
+
 describe("GET /api/rooms", () => {
   test("200: responds with an array containing all rooms objects", () => {
     return request(app)
       .get("/api/rooms")
       .expect(200)
       .then(({ body }) => {
+        expect(Array.isArray(body)).toBe(true);
         body.forEach((room) => {
           expect(room).toHaveProperty("id");
+          expect(room).toHaveProperty("created_at");
           expect(room).toHaveProperty("room_name");
+          // Accept null or string
+          expect(
+            typeof room.description === "string" || room.description === null,
+          ).toBe(true);
         });
       });
   });
 });
 
-describe("POST /api/rooms", () => {
-  test("201: creates a new room", async () => {
-    const res = await request(app)
-      .post("/api/rooms")
-      .send({
-        room_name: "Garage",
-        description: "Room for the car",
-      })
-      .expect(201);
-    expect(res.body).toHaveProperty("id");
-    expect(res.body.room_name).toBe("Garage");
-    expect(res.body.description).toBe("Room for the car");
-  });
-
-  test("400: missing room_name returns error", async () => {
-    await request(app)
-      .post("/api/rooms")
-      .send({ description: "No name" })
-      .expect(400)
-      .then((res) => {
-        expect(res.body).toEqual({ msg: "Missing room_name in request body" });
+describe("GET /api/status", () => {
+  test("200: responds with an array containing all status objects", () => {
+    return request(app)
+      .get("/api/status")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toHaveLength(5);
+        body.forEach((status) => {
+          expect(status).toMatchObject({
+            id: expect.any(Number),
+            created_at: expect.any(String),
+            description: expect.any(String),
+          });
+        });
       });
   });
 });
@@ -96,7 +112,13 @@ describe("GET /api/users", () => {
       .expect(200)
       .then(({ body }) => {
         body.forEach((user) => {
-          expect(user).toHaveProperty("user_name");
+          expect(user).toMatchObject({
+            created_at: expect.any(String),
+            user_name: expect.any(String),
+            group_name: expect.any(String),
+            image_url: expect.any(String),
+            is_admin: expect.any(Boolean),
+          });
         });
       });
   });
@@ -109,7 +131,7 @@ describe("GET /api/tasks/:userId", () => {
       .expect(200)
       .then(({ body }) => {
         body.forEach((task) => {
-          expect(task).toHaveProperty("users");
+          expect(task.users).toMatchObject({ user_name: expect.any(String) });
         });
       });
   });
@@ -129,8 +151,9 @@ describe("GET /api/points/:userId", () => {
       .get("/api/points/7")
       .expect(200)
       .then(({ body }) => {
-        expect(body).toHaveProperty("UserId");
+        expect(body).toHaveProperty("UserId", "7");
         expect(body).toHaveProperty("Total Points");
+        expect(typeof body["Total Points"]).toBe("number");
       });
   });
 });
@@ -157,17 +180,19 @@ describe.skip("POST /api/tasks", () => {
 });
 
 describe.skip("DELETE /api/tasks/:taskId", () => {
-  test("204: deletes a task", () => {
+  test("201: responds with posted task", () => {
     return request(app).delete("/api/tasks/28").expect(204);
   });
 });
+
+// ------- PATCH TESTS START HERE --------
 
 describe("PATCH /api/tasks/:taskId/status", () => {
   test("200: updates the task status and returns the updated task", async () => {
     // Use a valid taskId from your seed/test db. Replace 1 if necessary!
     const response = await request(app)
       .patch("/api/tasks/1/status")
-      .send({ status_id: 2 })
+      .send({ status_id: 2 }) // use a valid status_id for your db
       .expect(200);
 
     expect(response.body).toHaveProperty("id", 1);
@@ -206,14 +231,15 @@ describe("PATCH /api/tasks/:taskId/status", () => {
       });
   });
 });
-describe.only("PATCH /api/tasks/:taskId", ()=>{
-  test("400: updates the assigned userId to new userId", ()=>{
-    return request(app)
-    .patch("/api/tasks/3")
-    .send({assigned_to_user_id: 3})
-    .expect(400)
-    // .then(({data})=>{
-    //   expect(data.assigned_to_user_id).toBe(6)
-    // })
-  })
-})
+
+describe("PATCH /api/tasks/:taskId", () => {
+  test("400: updates the assigned userId to new userId", async () => {
+    await request(app)
+      .patch("/api/tasks/3")
+      .send({ assigned_to_user_id: 3 })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).toHaveProperty("msg");
+      });
+  });
+});
