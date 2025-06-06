@@ -2,6 +2,7 @@
   "name": "house_harmony",
   "version": "1.0.0",
   "description": "BE house harmony",
+  "main": "listen.js",
   "homepage": "https://github.com/whattheactualthough/house_harmony#readme",
   "bugs": {
     "url": "https://github.com/whattheactualthough/house_harmony/issues"
@@ -13,12 +14,13 @@
   "license": "ISC",
   "author": "",
   "type": "commonjs",
-  "main": "index.js",
   "scripts": {
-    "test": "jest --runInBand"
+    "test": "jest --runInBand",
+    "start": "node listen.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.8",
+    "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0"
   },

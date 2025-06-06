@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
 
 const { getUsers } = require("./app/controllers/users.controller");
@@ -15,6 +16,7 @@ const {
 const { getStatus } = require("./app/controllers/status.controller");
 const { getRooms, postRoom } = require("./app/controllers/rooms.controller");
 
+app.use(cors());
 app.use(express.json());
 
 // API docs
