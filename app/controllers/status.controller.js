@@ -1,8 +1,11 @@
-const {selectStatus}= require("../models/status.model");
+const { supabase } = require("../../db/supabaseConfig");
 
-exports.getStatus = (req, res, next) => {
-  return selectStatus().then((result) => {
-    res.status(200).send(result);
-  }).catch((err)=>next(err));
-  
+exports.getStatus = async (req, res, next) => {
+  try {
+    const { data, error } = await supabase.from("status").select("*");
+    if (error) throw error;
+    res.status(200).json(data);
+  } catch (err) {
+    next(err);
+  }
 };

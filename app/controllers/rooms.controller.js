@@ -1,20 +1,11 @@
-// app/controllers/rooms.controller.js
-const { selectRooms, addRoom } = require("../models/rooms.model");
+const { supabase } = require("../../db/supabaseConfig");
 
-exports.getRooms = (req, res, next) => {
-  selectRooms()
-    .then((rooms) => res.status(200).send(rooms))
-    .catch(next);
-};
-
-exports.postRoom = (req, res, next) => {
-  addRoom(req.body)
-    .then((room) => res.status(201).send(room))
-    .catch((err) => {
-      if (err.status === 400) {
-        res.status(400).send({ msg: err.message });
-      } else {
-        next(err);
-      }
-    });
+exports.getRooms = async (req, res, next) => {
+  try {
+    const { data, error } = await supabase.from("rooms").select("*");
+    if (error) throw error;
+    res.status(200).json(data);
+  } catch (err) {
+    next(err);
+  }
 };

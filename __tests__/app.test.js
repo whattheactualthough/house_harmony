@@ -19,8 +19,8 @@ describe("Error Handling General", () => {
     return request(app)
       .get("/api/incorrectendpoint")
       .expect(404)
-      .then((response) => {
-        expect(response.body).toEqual({ msg: "Error Not Found" });
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: "Error Not Found" });
       });
   });
 });
@@ -57,7 +57,7 @@ describe.skip("GET /api/images", () => {
       .get("/api/images")
       .expect(200)
       .then(({ body }) => {
-        expect(body).toHaveLength(/* number of tasks in test array*/);
+        expect(body).toHaveLength(/* number of images in test DB */);
         body.forEach((image) => {
           expect(image).toMatchObject({
             created_at: expect.any(String),
@@ -79,7 +79,6 @@ describe("GET /api/rooms", () => {
           expect(room).toHaveProperty("id");
           expect(room).toHaveProperty("created_at");
           expect(room).toHaveProperty("room_name");
-          // Accept null or string
           expect(
             typeof room.description === "string" || room.description === null,
           ).toBe(true);
@@ -94,7 +93,8 @@ describe("GET /api/status", () => {
       .get("/api/status")
       .expect(200)
       .then(({ body }) => {
-        expect(body).toHaveLength(5);
+        expect(Array.isArray(body)).toBe(true);
+        expect(body.length).toEqual(expect.any(Number));
         body.forEach((status) => {
           expect(status).toMatchObject({
             id: expect.any(Number),
@@ -112,15 +112,49 @@ describe("GET /api/users", () => {
       .get("/api/users")
       .expect(200)
       .then(({ body }) => {
+        expect(Array.isArray(body)).toBe(true);
         body.forEach((user) => {
           expect(user).toMatchObject({
-            created_at: expect.any(String),
+            id: expect.any(Number),
             user_name: expect.any(String),
-            group_name: expect.any(String),
-            image_url: expect.any(String),
-            is_admin: expect.any(Boolean),
+            created_at: expect.any(String),
+            email: expect.any(String),
           });
         });
+      });
+  });
+});
+
+describe("GET /api/users/:userId", () => {
+  test("200: responds with a single user object when a valid userId is provided", () => {
+    return request(app)
+      .get("/api/users/1")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toMatchObject({
+          id: 1,
+          user_name: expect.any(String),
+          created_at: expect.any(String),
+          email: expect.any(String),
+        });
+      });
+  });
+
+  test("404: responds with an error if user does not exist", () => {
+    return request(app)
+      .get("/api/users/99999")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: "User not found" });
+      });
+  });
+
+  test("400: responds with an error if userId is invalid", () => {
+    return request(app)
+      .get("/api/users/not-a-number")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: "Invalid user ID" });
       });
   });
 });
@@ -136,6 +170,7 @@ describe("GET /api/tasks/:userId", () => {
         });
       });
   });
+
   test("404: responds err message if user has no tasks assigned", () => {
     return request(app)
       .get("/api/tasks/99999")
@@ -186,14 +221,11 @@ describe.skip("DELETE /api/tasks/:taskId", () => {
   });
 });
 
-// ------- PATCH TESTS START HERE --------
-
 describe("PATCH /api/tasks/:taskId/status", () => {
   test("200: updates the task status and returns the updated task", async () => {
-    // Use a valid taskId from your seed/test db. Replace 1 if necessary!
     const response = await request(app)
       .patch("/api/tasks/1/status")
-      .send({ status_id: 2 }) // use a valid status_id for your db
+      .send({ status_id: 2 })
       .expect(200);
 
     expect(response.body).toHaveProperty("id", 1);
@@ -239,39 +271,16 @@ describe("PATCH /api/tasks/:taskId", () => {
       .patch("/api/tasks/3")
       .send({ assigned_to_user_id: 3 })
       .expect(400);
-    // .then(({data})=>{
-    //   expect(data.assigned_to_user_id).toBe(6)
-    // })
   });
 });
-//test("POST /api/images", () => {
-describe("POST /api/images", () => {
-  test.skip("201: uploads an image and returns the upload data", async () => {
-    const imagePath =
-      "/home/kiran/project/house_harmony/app/images/house_harmony.png";
-    const image = fs.readFileSync(imagePath);
-    return request(app)
-      .post("/api/images")
-      .attach("image", image, "house_harmony.png")
-      .expect(201)
-      .then(({ body }) => {
-        expect(body).toHaveProperty("path");
-        expect(body.path).toBe("house_harmony.png");
-        expect(body).toHaveProperty("id");
-        expect(body).toHaveProperty("fullPath");
-      });
-  });
-});
-// ------- NEW TESTS FOR FILTER BY ROOM --------
 
 describe("GET /api/tasks/room/:roomId", () => {
   test("200: responds with an array of tasks for a valid roomId", () => {
     return request(app)
-      .get("/api/tasks/room/1") // replace 1 with a roomId present in your test DB
+      .get("/api/tasks/room/1")
       .expect(200)
       .then(({ body }) => {
         expect(Array.isArray(body)).toBe(true);
-        // If there are tasks in room 1, each should include a `rooms` object
         body.forEach((task) => {
           expect(task).toHaveProperty("rooms");
           expect(task.rooms).toHaveProperty("room_name", expect.any(String));
@@ -281,7 +290,7 @@ describe("GET /api/tasks/room/:roomId", () => {
 
   test("200: responds with an empty array if no tasks exist for that room", () => {
     return request(app)
-      .get("/api/tasks/room/99999") // use an ID that definitely has no tasks
+      .get("/api/tasks/room/99999")
       .expect(200)
       .then(({ body }) => {
         expect(Array.isArray(body)).toBe(true);

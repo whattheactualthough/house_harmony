@@ -1,22 +1,42 @@
-const { uploadImage } = require("../models/images.model");
+const { supabase } = require("../../db/supabaseConfig");
 
+exports.getAllImages = async (req, res, next) => {
+  try {
+    const { data, error } = await supabase
+      .from("images")
+      .select("id, image_url, created_at, task_id, user_id");
 
-exports.postImage =  (req, res, next) => {
+    if (error) throw error;
+    res.status(200).json(data);
+  } catch (err) {
+    next(err);
+  }
+};
 
-    const file = req.file; // Assuming you're using multer for file uploads
-    if (!file) {
-        return res.status(400).send({ msg: "No file uploaded" });
+exports.postImage = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ msg: "No image file provided" });
     }
 
+    const { originalname, buffer, mimetype } = req.file;
+    // Adjust bucket name "images" if different in your Supabase project
+    const { data, error } = await supabase.storage
+      .from("images")
+      .upload(originalname, buffer, { contentType: mimetype });
 
-    // Call the uploadImage function from the model
+    if (error) throw error;
 
-    console.log("Received file:", file.originalname);
-    console.log("File size:", file.size, "bytes");
-    console.log("File mimetype:", file.mimetype);
+    // Construct a public URL (adjust based on your storage settings)
+    const publicUrl = supabase.storage.from("images").getPublicUrl(data.path)
+      .data.publicUrl;
 
-
-    uploadImage(file)
-        .then((data) => res.status(201).send(data))
-        .catch(next);
-}
+    res.status(201).json({
+      id: data.id || null,
+      path: data.path,
+      publicUrl,
+    });
+  } catch (err) {
+    next(err);
+  }
+};

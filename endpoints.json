@@ -107,6 +107,16 @@
             }
           ]
         },
+        "/api/users/:user_id": {
+          "description": "Get a single user's data by user ID.",
+          "methods": ["GET"],
+          "example_response": {
+            "id": 1,
+            "user_name": "Gustavo",
+            "created_at": "2025-06-01T10:00:00.000Z",
+            "email": "gustavo@example.com"
+          }
+        },
         "/api/users/:user_id/tasks": {
           "description": "Get all tasks assigned to a specific user.",
           "methods": ["GET"],
@@ -161,129 +171,14 @@
       }
     }
   },
-  "/api/tasks": {
-    "description": "Get all tasks.",
+  "/api/users/:user_id": {
+    "description": "Get a single user's data by user ID.",
     "methods": ["GET"],
-    "example_response": [
-      {
-        "id": 1,
-        "created_at": "2025-06-02T11:01:30.174115+00:00",
-        "task_name": "hoover",
-        "description": "",
-        "is_urgent": false,
-        "due_date": "2025-06-09",
-        "task_specific_date": null,
-        "is_recurring": true,
-        "recurring_frequency": 7,
-        "room_id": 2,
-        "created_by_user_id": 1,
-        "assigned_to_user_id": 3,
-        "status_id": 1,
-        "task_complete_image_id": null,
-        "updated_at": "2025-06-02T11:01:30.174115",
-        "task_image_id": null,
-        "task_desirability_level_id": 2
-      }
-    ]
-  },
-  "/api/tasks/room/:roomId": {
-    "description": "Returns a list of tasks associated with the given room.",
-    "methods": ["GET"],
-    "example_request": "/api/tasks/room/2",
-    "example_response": [
-      {
-        "id": 5,
-        "created_at": "2025-06-04T14:30:00.000Z",
-        "task_name": "Take out recycling",
-        "description": "Empty bins in the kitchen",
-        "is_urgent": false,
-        "due_date": "2025-06-07",
-        "task_specific_date": null,
-        "is_recurring": false,
-        "recurring_frequency": null,
-        "rooms": { "room_name": "Kitchen" },
-        "users": { "user_name": "Alice" },
-        "status": { "description": "pending" },
-        "task_desirability_level": { "level": 1, "points": 5 },
-        "updated_at": "2025-06-04T14:30:00.000Z"
-      }
-    ]
-  },
-  "/api/rooms": {
-    "description": "Get all rooms.",
-    "methods": ["GET"],
-    "example_response": [
-      { "id": 1, "room_name": "Kitchen", "description": null },
-      { "id": 2, "room_name": "Bathroom", "description": null }
-    ]
-  },
-  "/api/users": {
-    "description": "Get all users.",
-    "methods": ["GET"],
-    "example_response": [
-      {
-        "id": 1,
-        "user_name": "Gustavo",
-        "created_at": "2025-06-01T10:00:00.000Z",
-        "email": "gustavo@example.com"
-      },
-      {
-        "id": 2,
-        "user_name": "Alex",
-        "created_at": "2025-06-01T11:00:00.000Z",
-        "email": "alex@example.com"
-      }
-    ]
-  },
-  "/api/users/:user_id/tasks": {
-    "description": "Get all tasks assigned to a specific user.",
-    "methods": ["GET"],
-    "example_response": [
-      {
-        "id": 3,
-        "task_name": "Do the dishes",
-        "description": "Wash and dry all dishes after dinner",
-        "is_urgent": false,
-        "due_date": "2025-06-05T20:00:00.000Z",
-        "task_specific_date": null,
-        "is_recurring": false,
-        "recurring_frequency": null,
-        "room_id": 1,
-        "created_by_user_id": 2,
-        "assigned_to_user_id": 1,
-        "status_id": 1,
-        "task_complete_image_id": null,
-        "updated_at": "2025-06-03T12:12:00.000Z",
-        "task_image_id": null,
-        "task_desirability_level_id": 1
-      }
-    ]
-  },
-  "/api/statuses": {
-    "description": "Get all possible task statuses.",
-    "methods": ["GET"],
-    "example_response": [
-      { "id": 1, "status_name": "pending" },
-      { "id": 2, "status_name": "claimed" },
-      { "id": 3, "status_name": "completed" }
-    ]
-  },
-  "/api/images": {
-    "description": "Get all images (task‐related or profile images).",
-    "methods": ["GET"],
-    "example_response": [
-      {
-        "id": 1,
-        "image_url": "https://your-supabase-storage-url/path/to/image.jpg",
-        "created_at": "2025-06-02T12:00:00.000Z",
-        "task_id": 1,
-        "user_id": null
-      }
-    ]
-  },
-  "404": {
-    "description": "Non-existent endpoint. Returns an error message.",
-    "methods": ["GET", "POST", "PATCH", "DELETE"],
-    "example_response": { "msg": "Error Not Found" }
+    "example_response": {
+      "id": 1,
+      "user_name": "Gustavo",
+      "created_at": "2025-06-01T10:00:00.000Z",
+      "email": "gustavo@example.com"
+    }
   }
 }
